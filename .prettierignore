@@ -1,0 +1,19 @@
+# Dependencies and builds
+node_modules
+.next
+out
+dist
+build
+coverage
+
+# Env and lock files
+.env*
+pnpm-lock.yaml
+
+# Generated assets
+*.log
+*.tmp
+
+# Keep docs and source formatted
+!*.md
+!*.mdx
