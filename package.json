@@ -1,9 +1,9 @@
 {
-  "name": "shipany-template-one",
+  "name": "portraitai",
   "version": "2.0.0",
   "private": true,
   "author": "idoubi",
-  "homepage": "https://shipany.ai",
+  "homepage": "https://portraitai.app",
   "scripts": {
     "dev": "cross-env NODE_NO_WARNINGS=1 next dev --turbopack",
     "build": "next build",
@@ -13,7 +13,7 @@
     "cf:build": "npx @cloudflare/next-on-pages",
     "cf:preview": "pnpm cf:build && wrangler pages dev",
     "cf:deploy": "pnpm cf:build && wrangler pages deploy",
-    "docker:build": "docker build -f Dockerfile -t shipany-template-one:latest .",
+    "docker:build": "docker build -f Dockerfile -t portraitai:latest .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

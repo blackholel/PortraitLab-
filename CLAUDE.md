@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-ShipAny Template One 是一个 AI SaaS 快速启动模板,基于 Next.js 15 (App Router)、TypeScript、Tailwind CSS 和 Shadcn UI 构建。项目整合了认证、支付、多语言、AI SDK 等完整的 SaaS 功能。
+PortraitAI 是一个 AI 肖像艺术生成平台,基于 Next.js 15 (App Router)、TypeScript、Tailwind CSS 和 Shadcn UI 构建。项目整合了认证、支付、多语言、AI SDK 等完整的 SaaS 功能,核心功能是通过豆包火山 Ark API 实现 AI 肖像风格转换。
 
 ## 常用命令
 
