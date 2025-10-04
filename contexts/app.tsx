@@ -131,6 +131,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         showFeedback,
         setShowFeedback,
+        fetchUserInfo, // 导出刷新用户信息的方法
       }}
     >
       {children}

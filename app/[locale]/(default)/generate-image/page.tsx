@@ -13,7 +13,7 @@ import { useAppContext } from "@/contexts/app";
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
 export default function GenerateImagePage() {
-  const { getUserCredits } = useAppContext();
+  const { fetchUserInfo } = useAppContext();
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
@@ -109,8 +109,10 @@ export default function GenerateImagePage() {
       setProgress(100);
       setGeneratedImageUrl(result.data.imageUrl);
 
-      // 更新用户积分
-      await getUserCredits();
+      // 刷新用户信息 (更新积分显示)
+      if (fetchUserInfo) {
+        await fetchUserInfo();
+      }
 
       toast.success("生成成功!");
     } catch (error) {
