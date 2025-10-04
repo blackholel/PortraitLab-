@@ -13,24 +13,14 @@
     "nav": {
       "items": [
         {
-          "title": "功能特点",
-          "url": "/#feature",
-          "icon": "RiSparkling2Line"
+          "title": "AI 肖像画廊",
+          "url": "/generate-image",
+          "icon": "RiImageAiLine"
         },
         {
           "title": "定价",
           "url": "/pricing",
           "icon": "RiMoneyDollarCircleLine"
-        },
-        {
-          "title": "案例展示",
-          "url": "/showcase",
-          "icon": "RiApps2Line"
-        },
-        {
-          "title": "AI 肖像画廊",
-          "url": "/generate-image",
-          "icon": "RiImageAiLine"
         }
       ]
     },

@@ -13,24 +13,14 @@
     "nav": {
       "items": [
         {
-          "title": "Features",
-          "url": "/#feature",
-          "icon": "RiSparkling2Line"
+          "title": "AI Portrait",
+          "url": "/generate-image",
+          "icon": "RiImageAiLine"
         },
         {
           "title": "Pricing",
           "url": "/pricing",
           "icon": "RiMoneyDollarCircleLine"
-        },
-        {
-          "title": "Showcase",
-          "url": "/showcase",
-          "icon": "RiApps2Line"
-        },
-        {
-          "title": "AI Portrait",
-          "url": "/generate-image",
-          "icon": "RiImageAiLine"
         }
       ]
     },

@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-PortraitAI 是一个 AI 肖像艺术生成平台,基于 Next.js 15 (App Router)、TypeScript、Tailwind CSS 和 Shadcn UI 构建。项目整合了认证、支付、多语言、AI SDK 等完整的 SaaS 功能,核心功能是通过豆包火山 Ark API 实现 AI 肖像风格转换。
+PortraitAI 是一个专注于 AI 肖像艺术生成的平台,基于 Next.js 15 (App Router)、TypeScript、Tailwind CSS 和 Shadcn UI 构建。项目整合了认证、支付、多语言、AI SDK 等完整的 SaaS 功能,核心功能是通过豆包火山 Ark API 实现 AI 肖像风格转换。
+
+**产品定位**: 专注 AI 肖像生成的单一功能平台
+- 首页直接跳转到生成页面 (`/generate-image`)
+- Header 导航精简为: AI 肖像画廊 + 定价 + 用户菜单
+- 保留完整后端功能(认证、支付、积分等),仅优化前端展示
 
 ## 常用命令
 
