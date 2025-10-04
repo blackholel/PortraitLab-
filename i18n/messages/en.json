@@ -121,5 +121,59 @@
     "contact_tip": "Other ways to contact us",
     "rating_tip": "How do you feel about ShipAny?",
     "placeholder": "Leave your words here..."
+  },
+  "generateImage": {
+    "title": "AI Portrait Studio",
+    "description": "Upload your photo, choose a style, and let AI create your artistic portrait",
+    "upload": {
+      "button": "Upload Photo",
+      "reselect": "Change Photo",
+      "placeholder": {
+        "title": "Upload Your Portrait",
+        "subtitle": "Supports JPG, PNG formats, max 2MB"
+      },
+      "tips": {
+        "quality": "💡 Upload clear front-facing photos for best results",
+        "resolution": "📐 Recommended resolution: 512x512 or higher"
+      }
+    },
+    "styles": {
+      "title": "Choose Your Style",
+      "cyberpunk": {
+        "name": "Cyberpunk",
+        "description": "Futuristic neon style with cyberpunk aesthetics"
+      },
+      "anime": {
+        "name": "Anime",
+        "description": "Japanese anime style with vibrant colors"
+      },
+      "hero": {
+        "name": "Hero Poster",
+        "description": "Marvel-style heroic poster with epic composition"
+      }
+    },
+    "generate": {
+      "button": "Generate (10 Credits)",
+      "generating": "Generating... {progress}%",
+      "download": "Download Image"
+    },
+    "progress": {
+      "uploading": "Uploading image...",
+      "processing": "AI processing...",
+      "generating": "Generating, estimated 15 seconds...",
+      "saving": "Saving..."
+    },
+    "errors": {
+      "no_image": "Please upload an image first",
+      "no_style": "Please select a style",
+      "file_too_large": "File size cannot exceed 2MB",
+      "invalid_file": "Please upload an image file",
+      "generation_failed": "Generation failed, please try again",
+      "insufficient_credits": "Insufficient credits, please recharge"
+    },
+    "success": {
+      "generated": "Generated successfully!",
+      "downloaded": "Download started"
+    }
   }
 }

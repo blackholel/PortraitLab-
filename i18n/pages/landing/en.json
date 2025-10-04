@@ -26,6 +26,11 @@
           "title": "Showcase",
           "url": "/showcase",
           "icon": "RiApps2Line"
+        },
+        {
+          "title": "AI Portrait",
+          "url": "/generate-image",
+          "icon": "RiImageAiLine"
         }
       ]
     },

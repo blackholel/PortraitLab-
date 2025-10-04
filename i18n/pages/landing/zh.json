@@ -26,6 +26,11 @@
           "title": "案例展示",
           "url": "/showcase",
           "icon": "RiApps2Line"
+        },
+        {
+          "title": "AI 肖像画廊",
+          "url": "/generate-image",
+          "icon": "RiImageAiLine"
         }
       ]
     },

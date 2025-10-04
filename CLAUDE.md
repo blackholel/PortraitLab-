@@ -60,12 +60,37 @@ cp .env.example .env.local  # 设置开发环境变量
 - 避免在 API Routes 中直接调用 Models
 - 保持单向依赖: API → Services → Models
 
-### AI SDK 集成 (`aisdk/`)
-项目包含自定义 AI SDK 集成,主要用于视频生成功能:
+### AI SDK 集成 (`aisdk/` 和 `lib/`)
+项目包含自定义 AI SDK 集成,支持多种 AI 功能:
+
+#### 视频生成
 - `aisdk/provider/` - 自定义 AI Provider 实现
 - `aisdk/kling/` - Kling AI 视频生成集成
 - `aisdk/generate-video/` - 视频生成工具
 - 使用 Vercel AI SDK 作为基础框架
+
+#### AI 肖像生成 (新增 ✨)
+- `lib/doubao.ts` - 豆包火山 Ark API 封装
+  - 支持图生图 (Image-to-Image)
+  - 风格参考图模式 (用户肖像 + 风格参考 → 风格化输出)
+  - 直接返回 URL,无需手动上传存储
+  - 支持 2K 高分辨率输出
+- `lib/style-presets.ts` - 风格预设配置管理
+  - MVP 提供 3 个精选风格: Cyberpunk, Anime, Hero
+  - 支持自定义风格扩展
+- `app/api/generate-image/route.ts` - 图片生成 API 端点
+  - 完整业务流程: 积分检查 → AI 生成 → 扣费
+  - 支持 Base64 图片上传 (最大 2MB)
+  - 同步生成模式 (15-30 秒,适配 Vercel Pro 5 分钟超时)
+- `app/[locale]/(default)/generate-image/page.tsx` - 用户生成页面
+  - 沉浸式画布设计,图片为视觉中心
+  - 实时进度反馈 (上传 → 处理 → 生成 → 保存)
+  - 单次生成消耗 10 积分
+
+**技术选型**:
+- **AI 模型**: 豆包 Seedream 4.0 (doubao-seedream-4-0-250828)
+- **成本**: $0.02-0.05/次 (豆包) vs $0.10/次 (用户), 毛利 50%-80%
+- **定价**: 10 积分/次 (100积分=$1)
 
 ### 认证系统
 - 使用 NextAuth.js v5 (beta.25) 进行认证
@@ -88,12 +113,31 @@ cp .env.example .env.local  # 设置开发环境变量
   5. 代理端口根据实际工具调整 (Clash: 7890/7891, V2Ray: 1080)
 - **参考**: [Auth.js Corporate Proxy Guide](https://authjs.dev/guides/corporate-proxy)
 
-### 支付集成
+### 支付集成与积分系统
 - Stripe 支付集成
 - API 端点: `app/api/checkout/` (创建支付会话)
 - Webhook 处理: `app/api/stripe-notify/` (处理支付回调)
 - 订单管理通过 `models/order.ts` 和 `services/order.ts`
 - 积分系统通过 `models/credit.ts` 和 `services/credit.ts`
+
+**积分类型 (CreditsTransType)**:
+- `new_user` - 新用户注册赠送 (10 积分)
+- `order_pay` - 用户充值
+- `system_add` - 系统手动添加
+- `ping` - Ping API 消耗 (1 积分)
+- `image_gen` - AI 图片生成消耗 (10 积分) ✨
+
+**开发环境管理**:
+- 开发 API: `POST /api/dev/add-credits` - 手动添加积分 (仅开发环境)
+- SQL 脚本: `scripts/add-credits.sql` - 数据库直接操作
+- 浏览器控制台快速添加:
+  ```javascript
+  fetch('/api/dev/add-credits', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ credits: 1000 })
+  }).then(r => r.json()).then(console.log)
+  ```
 
 ### 国际化 (i18n)
 - 使用 `next-intl` 进行多语言支持
@@ -159,6 +203,11 @@ cp .env.example .env.local  # 设置开发环境变量
 - `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GITHUB_ID` - 认证配置
 - `STRIPE_PUBLIC_KEY`, `STRIPE_PRIVATE_KEY` - Stripe 配置
 - `STORAGE_*` - AWS S3 存储配置
+- **AI 图片生成 (新增)** ✨:
+  - `ARK_API_KEY` - 豆包火山 Ark API 密钥
+  - `ARK_BASE_URL` - API 基础 URL (默认: `https://ark.cn-beijing.volces.com/api/v3`)
+  - `IMAGE_GEN_COST` - 单次生成积分消耗 (默认: 10)
+  - `IMAGE_GEN_MAX_SIZE` - 上传文件最大大小 (默认: 2097152 = 2MB)
 
 ### 部署配置
 - **Vercel**: 使用 `output: "standalone"` 配置
@@ -175,6 +224,56 @@ cp .env.example .env.local  # 设置开发环境变量
 6. **代理环境开发**: 中国大陆环境需使用代理启动 (见认证系统章节)
 
 ## 常见问题
+
+### AI 肖像生成相关 (新增 ✨)
+
+#### 积分不足错误
+**现象**: "积分不足,需要 10 积分,当前剩余 0 积分"
+
+**解决方法** (开发环境):
+1. **浏览器控制台快速添加** (推荐):
+   ```javascript
+   fetch('/api/dev/add-credits', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ credits: 1000 })
+   }).then(r => r.json()).then(console.log)
+   ```
+
+2. **通过 Supabase SQL Editor**:
+   ```sql
+   -- 查找用户 UUID
+   SELECT uuid, email FROM users ORDER BY created_at DESC LIMIT 5;
+
+   -- 添加 1000 积分 (替换 YOUR_UUID)
+   INSERT INTO credits (trans_no, user_uuid, trans_type, credits, created_at, expired_at)
+   VALUES ('dev-' || gen_random_uuid()::text, 'YOUR_UUID', 'system_add', 1000, NOW(), NOW() + INTERVAL '1 year');
+   ```
+
+3. **使用脚本**: `./scripts/add-credits.sh 1000`
+
+**注意**: `/api/dev/add-credits` 仅在 `NODE_ENV=development` 可用,生产环境自动禁用
+
+#### 豆包 API 调用失败
+**现象**: "豆包 API 调用失败 [401/403]"
+
+**原因**: `ARK_API_KEY` 无效或配额不足
+
+**解决**:
+1. 检查 `.env.local` 中的 `ARK_API_KEY` 配置
+2. 登录 https://console.volcengine.com/ark 确认:
+   - API Key 是否正确
+   - 账户余额是否充足
+   - Seedream 4.0 模型是否已开通
+
+#### 生成超时
+**现象**: 请求超过 10 秒超时
+
+**原因**: Vercel Hobby Plan 限制 10 秒超时
+
+**解决**: 升级到 Vercel Pro ($20/月, 支持 5 分钟超时)
+
+### 认证系统相关
 
 ### Google OAuth "fetch failed" 错误
 **现象**: `[auth][error] TypeError: fetch failed` 在访问 Google OAuth 时出现
